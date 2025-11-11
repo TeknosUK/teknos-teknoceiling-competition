@@ -5,15 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 <title>Teknos TEKNOCEILING Competition</title>
 
-<style>
-/* Prevent GitHub Pages or parent site styling from affecting this */
-#app, #app * {
-  box-sizing: border-box;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-  margin: 0;
-  padding: 0;
-}
+<!-- Font: Titillium Web -->
+<link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;600;700&display=swap" rel="stylesheet" />
 
+<style>
 :root{
   --brand:#007050;
   --bg:#f5f7f8;
@@ -24,63 +19,170 @@
   --ok:#0f9d58;
 }
 
-body{ background:var(--bg); }
+body{
+  background:var(--bg);
+  margin:0;
+  font-family:'Titillium Web', sans-serif;
+  font-weight:300;
+}
 
-/* Layout */
+/* Container */
 #app{ max-width:600px; margin:0 auto; padding:24px; }
-.card{ background:var(--card); padding:24px; border-radius:18px; box-shadow:0 4px 24px rgba(0,0,0,0.07); }
 
-/* Typography */
-h1{ font-size:26px; font-weight:800; margin-bottom:6px; color:var(--text); }
-.sub{ font-size:15px; color:var(--muted); margin-bottom:20px; }
+/* Card */
+.card{
+  background:var(--card);
+  padding:28px;
+  border-radius:18px;
+  box-shadow:0 4px 24px rgba(0,0,0,0.07);
+}
 
-/* Fields */
-label{ font-size:15px; font-weight:600; margin-top:14px; display:block; }
-input{ width:100%; padding:14px; border-radius:12px; font-size:16px; border:1px solid #dfe5ea; background:#fff; margin-top:6px; }
-input:focus{ border-color:var(--brand); outline:none; }
+/* Logo */
+.logo{
+  width:140px;
+  margin-bottom:18px;
+}
+
+/* Heading */
+h1{
+  font-size:28px;
+  font-weight:600;
+  margin:0 0 6px;
+  color:var(--text);
+}
+
+.sub{
+  font-size:16px;
+  color:var(--muted);
+  margin-bottom:24px;
+  line-height:1.4;
+}
+
+/* Form Fields */
+label{
+  font-size:16px;
+  font-weight:600;
+  margin-top:16px;
+  display:block;
+}
+
+input{
+  width:100%;
+  padding:14px;
+  margin-top:6px;
+  border-radius:12px;
+  background:#fff;
+  border:1px solid #dfe5ea;
+  font-size:16px;
+  font-family:'Titillium Web', sans-serif;
+  font-weight:300;
+}
+input:focus{
+  border-color:var(--brand);
+  outline:none;
+}
 
 /* Checkboxes */
-.checkbox-row{ display:flex; gap:10px; margin-top:14px; font-size:14px; line-height:1.3; }
+.checkbox-row{
+  display:flex;
+  gap:10px;
+  margin-top:16px;
+  font-size:15px;
+  line-height:1.3;
+}
 
 /* Buttons */
-button{ width:100%; padding:14px; border:none; border-radius:12px; font-size:16px; font-weight:700; cursor:pointer; }
-button#btnSubmit{ background:var(--brand); color:white; }
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  font-size:18px;
+  font-weight:600;
+  cursor:pointer;
+  font-family:'Titillium Web', sans-serif;
+}
+
+#btnSubmit{
+  background:var(--brand);
+  color:white;
+  margin-top:22px;
+}
+#btnSubmit:hover{
+  background:#00563e;
+}
 
 /* Messages */
-.msg{ display:none; margin-top:16px; padding:14px; border-radius:10px; font-size:15px; border-left:5px solid var(--ok); background:#e9f8ef; }
-.msg.error{ border-left-color:var(--danger); background:#ffeef0; }
+.msg{
+  display:none;
+  margin-top:18px;
+  padding:14px;
+  border-radius:10px;
+  font-size:15px;
+  border-left:5px solid var(--ok);
+  background:#e9f8ef;
+}
+.msg.error{
+  border-left-color:var(--danger);
+  background:#ffeef0;
+}
 
-/* Thank you */
-.thankyou{ display:none; text-align:center; padding:40px 10px; }
-.thankyou h2{ font-size:28px; margin-bottom:6px; }
+/* Thank You */
+.thankyou{
+  display:none;
+  text-align:center;
+  padding:40px 10px;
+}
+.thankyou h2{
+  font-size:30px;
+  font-weight:700;
+  margin-bottom:6px;
+}
 
-/* Kiosk utility */
-.kiosk{ position:fixed; right:14px; bottom:14px; display:flex; gap:8px; }
-.kiosk button{ width:auto; padding:8px 12px; background:#fff; border:1px solid #ccc; color:#222; border-radius:999px; font-size:13px; }
+/* Kiosk Controls */
+.kiosk{
+  position:fixed;
+  right:14px;
+  bottom:14px;
+  display:flex;
+  gap:8px;
+}
+.kiosk button{
+  width:auto;
+  padding:8px 12px;
+  background:#fff;
+  border:1px solid #ccc;
+  color:#222;
+  border-radius:999px;
+  font-size:13px;
+}
 </style>
-
 </head>
+
 <body>
 <div id="app">
   <div class="card">
-    <h1>Teknos TEKNOCEILING Competition</h1>
+    
+    <img src="https://www.teknos.com/globalassets/05-meta/logo/teknos-logo.svg" class="logo" alt="Teknos Logo">
+
+    <h1>TEKNOCEILING Competition</h1>
     <div class="sub">Enter to win. Winner drawn every hour.</div>
 
     <form id="leadForm">
       <label>First name *</label>
-      <input required name="firstName" />
+      <input required name="firstName">
 
       <label>Last name *</label>
-      <input required name="lastName" />
+      <input required name="lastName">
 
       <label>Company *</label>
-      <input required name="company" />
+      <input required name="company">
 
       <label>Email *</label>
-      <input required type="email" name="email" />
+      <input required type="email" name="email">
 
       <label>Phone</label>
-      <input name="phone" />
+      <input name="phone">
 
       <label class="checkbox-row">
         <input type="checkbox" name="marketingOptIn">
@@ -93,6 +195,7 @@ button#btnSubmit{ background:var(--brand); color:white; }
       </label>
 
       <button type="submit" id="btnSubmit">Submit</button>
+
       <div class="msg" id="msg"></div>
     </form>
 
@@ -100,6 +203,7 @@ button#btnSubmit{ background:var(--brand); color:white; }
       <h2>✅ You're entered!</h2>
       <p>Screen resets shortly...</p>
     </div>
+
   </div>
 </div>
 
@@ -126,12 +230,12 @@ async function sendPayload(payload){
 }
 
 function showThank(){
-  document.getElementById("leadForm").style.display="none";
-  document.getElementById("thankYou").style.display="block";
+  leadForm.style.display="none";
+  thankYou.style.display="block";
   setTimeout(()=>location.reload(),3500);
 }
 
-document.getElementById("leadForm").addEventListener("submit",async e=>{
+leadForm.addEventListener("submit", async e=>{
   e.preventDefault();
   const fd=new FormData(e.target);
   const payload={
@@ -150,7 +254,7 @@ document.getElementById("leadForm").addEventListener("submit",async e=>{
   showThank();
 });
 
-document.getElementById("btnSync").addEventListener("click",async()=>{
+btnSync.addEventListener("click", async()=>{
   while(getQueue().length){
     try{ await sendPayload(popQueue()); }
     catch{ break; }
