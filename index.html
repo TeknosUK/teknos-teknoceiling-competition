@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Teknos — TEKNOCEILING Competition</title>
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <style>
+    :root{
+      --brand: #007050;            /* Teknos green (placeholder) */
+      --brand-dark: #005a40;
+      --bg: #f5f7f8;
+      --card: #ffffff;
+      --text: #0f1720;
+      --muted: #5b6570;
+      --danger: #b00020;
+      --ok: #0f9d58;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { height: 100%; }
+    body{ margin:0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; background: var(--bg); color: var(--text); }
+
+    .wrap{ display:flex; flex-direction:column; min-height:100%; }
+
+    .header{ position:sticky; top:0; background:linear-gradient(180deg, #fff, rgba(255,255,255,0.92)); border-bottom:1px solid #e7ebef; z-index:10; }
+    .brandbar{ display:flex; align-items:center; gap:16px; padding:14px 18px; max-width:980px; margin:0 auto; }
+    .title{ font-size:22px; font-weight:800; }
+    .subtitle{ color: var(--muted); font-size:14px; }
+
+    .container{ width:100%; max-width:980px; margin:0 auto; padding:18px; }
+    .card{ background:var(--card); border:1px solid #e7ebef; border-radius:20px; padding:18px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); }
+
+    .grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    @media (max-width: 860px) { .grid{ grid-template-columns:1fr; } }
+
+    label{ font-weight:600; font-size:14px; margin-bottom:7px; display:block; }
+    .hint{ font-size:12px; color:var(--muted); margin-top:6px; }
+
+    input[type="text"], input[type="email"], input[type="tel"], select, textarea{
+      width:100%; padding:14px 14px; border-radius:14px; border:1px solid #dfe5ea; background:#fff; font-size:16px; outline:none;
+    }
+    textarea{ min-height:110px; resize:none; }
+    input:focus, select:focus, textarea:focus{ border-color: var(--brand); box-shadow: 0 0 0 3px rgba(0,112,80,0.12); }
+
+    .row{ display:flex; align-items:center; gap:12px; }
+
+    .actions{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:14px; }
+    .left-actions{ display:flex; align-items:center; gap:10px; }
+
+    .btn{ appearance:none; border:none; border-radius:14px; padding:14px 18px; font-size:17px; font-weight:700; cursor:pointer; }
+    .btn-primary{ background:var(--brand); color:#fff; }
+    .btn-primary:active{ transform: translateY(1px); }
+    .btn-secondary{ background:#eef3f5; color:#0b1820; font-weight:600; }
+    .btn-link{ background: transparent; color: var(--brand); font-weight:700; padding:10px 12px; }
+
+    .foot{ margin-top:8px; font-size:12px; color:var(--muted); }
+
+    .statusbar{ display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; border:1px dashed #dfe5ea; margin:12px 0 0; }
+    .dot{ width:10px; height:10px; border-radius:50%; background:#999; }
+    .online .dot{ background: var(--ok); }
+    .offline .dot{ background: var(--danger); }
+
+    .msg{ display:none; border:1px solid #dbe4ea; border-left:6px solid var(--ok); background:#f7fbf9; color:#204230; padding:14px; border-radius:12px; margin:12px 0; font-size:15px; }
+    .msg.error{ border-left-color: var(--danger); background:#fff7f8; color:#5a0a17; }
+
+    .thankyou{ display:none; text-align:center; padding:30px 14px; }
+    .thankyou h2{ font-size:28px; margin:0 0 10px; }
+    .thankyou p{ color:var(--muted); }
+
+    /* Kiosk helpers */
+    .kioskbar{ position:fixed; right:14px; bottom:14px; background:rgba(255,255,255,0.9); border:1px solid #e7ebef; border-radius:999px; display:flex; gap:8px; padding:8px; z-index:50; box-shadow: 0 6px 24px rgba(0,0,0,0.08); }
+    .kioskbar button{ font-size:14px; padding:10px 12px; border-radius:999px; border:1px solid #dde5ec; background:#fff; }
+
+    .watermark{ text-align:center; color:var(--muted); font-size:12px; margin-top:12px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="header">
+      <div class="brandbar">
+        <div>
+          <div class="title">Teknos TEKNOCEILING Competition</div>
+          <div class="subtitle">Enter your details to be in with a chance of winning. We’ll draw a winner every hour.</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="card" id="formCard" aria-live="polite">
+        <form id="leadForm" autocomplete="off">
+          <div class="grid">
+            <div>
+              <label for="firstName">First name *</label>
+              <input id="firstName" name="firstName" type="text" required inputmode="text" autocapitalize="words" />
+            </div>
+            <div>
+              <label for="lastName">Last name *</label>
+              <input id="lastName" name="lastName" type="text" required inputmode="text" autocapitalize="words" />
+            </div>
+            <div>
+              <label for="company">Company *</label>
+              <input id="company" name="company" type="text" required />
+            </div>
+            <div>
+              <label for="email">Email *</label>
+              <input id="email" name="email" type="email" required inputmode="email" autocomplete="email" />
+              <div class="hint">We’ll only use this to follow up from the event and to contact winners.</div>
+            </div>
+            <div>
+              <label for="phone">Phone</label>
+              <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" />
+            </div>
+
+            <div style="grid-column: 1/-1;">
+              <label class="row" style="align-items:flex-start; gap:12px; margin-top:8px;">
+                <input id="marketingOptIn" type="checkbox" name="marketingOptIn" />
+                <span>Yes, I’d like to receive occasional product updates, events, and resources from Teknos.</span>
+              </label>
+              <label class="row" style="align-items:flex-start; gap:12px; margin-top:8px;">
+                <input id="consent" type="checkbox" name="consent" required />
+                <span>I consent to Teknos storing my details for the purpose of this competition and post-event follow-up. <a href="#" id="privacyLink" class="btn-link" role="button">Privacy notice</a></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="actions">
+            <div class="left-actions">
+              <button type="button" id="btnReset" class="btn btn-secondary">Reset</button>
+            </div>
+            <div>
+              <button type="submit" id="btnSubmit" class="btn btn-primary">Submit</button>
+            </div>
+          </div>
+
+          <div class="statusbar" id="statusBar" aria-live="polite">
+            <div class="dot" id="netDot"></div>
+            <div id="netText">Checking connection…</div>
+            <div style="margin-left:auto; font-size:12px; color:var(--muted);">Queued: <span id="queueCount">0</span></div>
+          </div>
+
+          <div id="msg" class="msg" role="status" aria-live="polite"></div>
+        </form>
+
+        <div class="thankyou" id="thankYou">
+          <h2>Thanks — you’re in ✅</h2>
+          <p>We’ll draw a winner every hour. This screen will reset automatically.</p>
+          <button class="btn btn-secondary" id="btnAddAnother">Add another</button>
+        </div>
+      </div>
+
+      <div class="watermark">Built for iPad kiosk mode · Works online & offline · Single file</div>
+    </main>
+
+    <div class="kioskbar" aria-label="Kiosk controls">
+      <button id="btnSync">Sync now</button>
+      <button id="btnDark">Dim</button>
+      <button id="btnLock">Guided Access</button>
+    </div>
+  </div>
+
+  <script>
+    // ---- CONFIG ----
+    const ENDPOINT = "https://script.google.com/macros/s/AKfycbxA1DzWmPYWNgLOO3XsjOi2sS6QeX233MXDimb41kUB1ymNKfOZDTffIJzFktjcgI81/exec";
+    const BRAND_EVENT = "TEKNOCEILING Competition";
+
+    // ---- UTILITIES ----
+    const $ = (id) => document.getElementById(id);
+    const queueKey = "teknosLeadQueue";
+
+    const getQueue = () => {
+      try { return JSON.parse(localStorage.getItem(queueKey) || "[]"); } catch(e){ return []; }
+    };
+    const setQueue = (arr) => localStorage.setItem(queueKey, JSON.stringify(arr));
+    const addToQueue = (payload) => { const q = getQueue(); q.push(payload); setQueue(q); refreshQueueCount(); };
+    const popQueue = () => { const q = getQueue(); const item = q.shift(); setQueue(q); refreshQueueCount(); return item; };
+    const refreshQueueCount = () => { $("queueCount").textContent = getQueue().length; };
+
+    const netUpdate = () => {
+      const online = navigator.onLine;
+      const bar = $("statusBar");
+      bar.classList.toggle("online", online);
+      bar.classList.toggle("offline", !online);
+      $("netText").textContent = online ? "Online" : "Offline — submissions will be queued";
+    };
+
+    // ---- FORM LOGIC ----
+    const form = $("leadForm");
+    const msgEl = $("msg");
+
+    function showMsg(text, isError=false){
+      msgEl.textContent = text;
+      msgEl.classList.toggle("error", isError);
+      msgEl.style.display = text ? "block" : "none";
+      if(text && !isError){ setTimeout(()=> msgEl.style.display = "none", 3000); }
+    }
+
+    function formDataToPayload(fd){
+      const when = new Date().toISOString();
+      return {
+        event: BRAND_EVENT,
+        when,
+        firstName: fd.get("firstName")?.trim() || "",
+        lastName: fd.get("lastName")?.trim() || "",
+        company: fd.get("company")?.trim() || "",
+        email: fd.get("email")?.trim() || "",
+        phone: fd.get("phone")?.trim() || "",
+        marketingOptIn: !!fd.get("marketingOptIn"),
+        consent: !!fd.get("consent"),
+        userAgent: navigator.userAgent
+      };
+    }
+
+    async function sendPayload(payload){
+      const res = await fetch(ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if(!res.ok){ throw new Error(`HTTP ${res.status}`); }
+      return await res.json().catch(()=> ({}));
+    }
+
+    function resetForm(){
+      form.reset();
+      showSection("form");
+    }
+
+    function showSection(which){
+      const isThank = which === "thank";
+      $("leadForm").style.display = isThank ? "none" : "block";
+      $("thankYou").style.display = isThank ? "block" : "none";
+    }
+
+    let resetTimer = null;
+    function startAutoReset(){
+      if(resetTimer) clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => { resetForm(); }, 6000);
+    }
+
+    // Inactivity reset (returns to blank form after 60s of no touch)
+    let idleTimer = null;
+    const resetIdle = () => {
+      if(idleTimer) clearTimeout(idleTimer);
+      idleTimer = setTimeout(()=> resetForm(), 60000);
+    };
+    ["touchstart","touchend","mousedown","keydown"].forEach(ev=> document.addEventListener(ev, resetIdle, {passive:true}));
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if(!form.reportValidity()) return;
+      const fd = new FormData(form);
+      const payload = formDataToPayload(fd);
+      $("btnSubmit").disabled = true;
+
+      try{
+        if(navigator.onLine){
+          await sendPayload(payload);
+          showMsg("Submitted successfully.");
+        } else {
+          addToQueue(payload);
+          showMsg("Saved offline. Will sync when online.");
+        }
+        showSection("thank");
+        startAutoReset();
+      }catch(err){
+        addToQueue(payload);
+        showMsg("Network issue — saved offline and added to queue.", true);
+        showSection("thank");
+        startAutoReset();
+      }finally{
+        $("btnSubmit").disabled = false;
+      }
+    });
+
+    $("btnReset").addEventListener("click", resetForm);
+    $("btnAddAnother").addEventListener("click", resetForm);
+
+    // ---- SYNC ----
+    async function syncQueue(){
+      if(!navigator.onLine){ showMsg("Still offline — cannot sync.", true); return; }
+      let sent = 0;
+      while(getQueue().length){
+        const item = popQueue();
+        try{ await sendPayload(item); sent++; }
+        catch(err){ addToQueue(item); break; }
+      }
+      showMsg(sent ? `Synced ${sent} entr${sent===1?'y':'ies'}.` : "Nothing to sync.");
+    }
+    $("btnSync").addEventListener("click", syncQueue);
+
+    // ---- UI helpers ----
+    $("btnDark").addEventListener("click", () => {
+      document.body.style.filter = document.body.style.filter ? "" : "brightness(0.9)";
+    });
+    $("btnLock").addEventListener("click", () => {
+      alert("Tip: On iPad, triple‑click the side button and enable Guided Access to lock to this app.");
+    });
+
+    window.addEventListener("online", netUpdate);
+    window.addEventListener("offline", netUpdate);
+
+    // Init
+    refreshQueueCount();
+    netUpdate();
+    resetIdle();
+  </script>
+</body>
+</html>
